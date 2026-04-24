@@ -1,0 +1,28 @@
+Took a break and reread my tic-tac-toe source from top to bottom before changing rules.
+Planned the two-phase move system first on paper:
+1) first three turns per player = placement
+2) after that = move one of your own pieces
+Added helper function to get all indexes for current player's pieces.
+Used that helper to detect if player is still in placement phase (`< 3`) or movement phase (`== 3`).
+In movement phase, implemented two-click behavior:
+- first click selects one of your own pieces
+- second click tries to move it
+Added validation checks for movement:
+- destination must be empty
+- source and destination must be adjacent (including diagonals)
+- re-click selected piece unselects it
+- clicking another own piece switches selection
+Implemented chorus lapilli center rule exactly:
+if current player owns center and has 3 pieces, a move that keeps center occupied is only allowed if that move wins immediately.
+If not winning, the move is rejected and board state stays the same.
+Kept winner lock from tic-tac-toe so the game does not accept further moves after win state.
+Added selected-piece visual highlight in CSS to make movement phase easier to use.
+Added reset button so I could rapidly test edge cases without reloading page.
+Manual tests I tried in browser:
+- invalid non-adjacent move (blocked)
+- valid adjacent move (accepted)
+- center-held non-winning move that does not vacate center (blocked)
+- center-held move that vacates center (accepted)
+- normal win then extra click (blocked)
+Extended `test_chorus_lapilli.py` with additional integration tests for these rules, especially post-win blocking.
+Ran `./helper test`; local sandbox had webdriver/network limitations, so I verified logic using manual play and test review.

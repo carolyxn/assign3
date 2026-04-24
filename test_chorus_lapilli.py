@@ -4,27 +4,12 @@ import os
 import sys
 import argparse
 import subprocess
-import unittest
 import urllib.request
 
 
 class TestChorusLapilli(unittest.TestCase):
-    '''Integration testing for Chorus Lapilli
-
-    This class handles the entire react start up, testing, and take down
-    process. Feel free to modify it to suit your needs.
-    '''
-
-    # ========================== [USEFUL CONSTANTS] ===========================
-
-    # Vite default startup address
     VITE_HOST_ADDR = 'http://localhost:5173'
-
-    # XPATH query used to find Chorus Lapilli board tiles
     BOARD_TILE_XPATH = '//button[contains(@class, \'square\')]'
-
-    # Sets of symbol classes - each string contains all valid characters
-    # for that particular symbol
     SYMBOL_BLANK = ''
     SYMBOL_X = 'Xx'
     SYMBOL_O = '0Oo'

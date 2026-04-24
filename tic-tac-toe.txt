@@ -1,0 +1,15 @@
+Opened the starter app and confirmed it was still the Hello World bootstrap card.
+Deleted that UI and started from the React tutorial style with `Square`, `Board`, and `Game`-style state in one file.
+Set up a 9-element array for board state and a boolean for whose turn is next.
+Wired each square button so a click sends the index back to the main click handler.
+Added guard checks so clicking a filled square does nothing (this fixed an early bug where moves could overwrite).
+Implemented `calculateWinner` using all 8 winning line combinations.
+Added status text logic: either "Next player: X/O" or "Winner: X/O".
+Ran `./helper dev`, opened localhost in browser, and manually played several games:
+- row win
+- column win
+- diagonal win
+- clicking already-filled spots
+Confirmed turns alternate correctly and board state resets on page refresh.
+Kept CSS classes from the starter (`square`, `board-row`, `status`) so layout stayed consistent.
+Did a final pass through `App.jsx` to make sure there was no leftover starter code.
