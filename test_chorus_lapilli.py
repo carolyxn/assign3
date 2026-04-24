@@ -4,12 +4,27 @@ import os
 import sys
 import argparse
 import subprocess
+import unittest
 import urllib.request
 
 
 class TestChorusLapilli(unittest.TestCase):
+    '''Integration testing for Chorus Lapilli
+
+    This class handles the entire react start up, testing, and take down
+    process. Feel free to modify it to suit your needs.
+    '''
+
+    # ========================== [USEFUL CONSTANTS] ===========================
+
+    # Vite default startup address
     VITE_HOST_ADDR = 'http://localhost:5173'
+
+    # XPATH query used to find Chorus Lapilli board tiles
     BOARD_TILE_XPATH = '//button[contains(@class, \'square\')]'
+
+    # Sets of symbol classes - each string contains all valid characters
+    # for that particular symbol
     SYMBOL_BLANK = ''
     SYMBOL_X = 'Xx'
     SYMBOL_O = '0Oo'
@@ -129,16 +144,71 @@ class TestChorusLapilli(unittest.TestCase):
 # =========================== [ADD YOUR TESTS HERE] ===========================
 
     def test_new_board_empty(self):
-        '''Check if a new game always starts with an empty board.'''
+        '''Empty board check'''
         tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
         self.assertBoardEmpty(tiles)
 
     def test_button_click(self):
-        '''Check if clicking the top-left button adds an X.'''
+        '''Clicking the top-left button adds an X check'''
         tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
         self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
+
+    def test_players_alternate(self):
+        '''Turns alternate between X and O check'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        tiles[1].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+
+    def test_cannot_play_on_occupied_square(self):
+        '''Occupied tiles reject additional placement attempts check'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        tiles[0].click()
+        tiles[1].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+
+    def test_no_more_moves_after_win(self):
+        '''Game blocks moves once a player has won check'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        for move in [0, 3, 1, 4, 2]:
+            tiles[move].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_X)
+        self.assertTileIs(tiles[2], self.SYMBOL_X)
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+
+    def test_fourth_move_must_be_adjacent(self):
+        '''Mvement after 3 pieces requires adjacency check'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        for move in [0, 3, 1, 4, 8, 5]:
+            tiles[move].click()
+
+        tiles[8].click()
+        tiles[6].click()
+        self.assertTileIs(tiles[8], self.SYMBOL_X)
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+
+        tiles[8].click()
+        tiles[7].click()
+        self.assertTileIs(tiles[8], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[7], self.SYMBOL_X)
+
+    def test_center_rule_requires_win_or_vacate(self):
+        '''Center rule for players with 3 pieces including center chekc'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        for move in [4, 0, 1, 3, 8, 5]:
+            tiles[move].click()
+
+        tiles[1].click()
+        tiles[2].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_X)
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
 
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================

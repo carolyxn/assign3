@@ -1,47 +1,37 @@
-Goal for this phase: modify the tic-tac-toe app into chorus lapilli and keep it reproducible.
-
-1) Start from the finished tic-tac-toe file
-- Opened `src/App.jsx` and read all logic first.
-- Kept existing board rendering and square indexing unchanged so tests still map tiles 0..8 correctly.
-
-2) Add movement-phase state
-- Added a state variable to remember the selected piece for two-click moves.
-- Kept turn state and board state from tic-tac-toe.
-
+1) Started from finished tic-tac-toe file
+- Opened src/App.jsx and read all logic first
+- Kept existing board rendering and square indexing unchanged so tests still map tiles 0-8 correctly
+2) Added movement phase state
+- Added a state variable to remember the selected piece for two click moves
+- Kept turn state and board state from tic-tac-toe
 3) Separate placement phase vs movement phase
-- Added helper to collect current player's piece positions.
+- Added helper to collect current player's piece positions
 - Used piece count to decide mode:
   - fewer than 3 pieces -> placement mode
-  - exactly 3 pieces -> movement mode
-
-4) Implement two-click movement flow (autograder-compatible)
-- First click selects one of your own pieces.
-- Second click selects destination.
-- Clicking selected piece again cancels selection.
-- Clicking another own piece switches the selected piece.
-
-5) Add move validation checks
+  - exactly 3 pieces -> movementmode
+4) Implemented two-click movement
+- First click selects one of your own pieces
+- Second click selects destination
+- Clicking selected piece again cancels selection
+- Clicking another own piece switches the selected piece
+5) Added move validation checks
 - Destination must be empty.
-- Destination must be adjacent (up/down/left/right/diagonal).
-- Non-adjacent or occupied destination is invalid.
-- For invalid second clicks, clear selection so move resets to start state.
-
-6) Add center-square rule
-- If current player has center square and has 3 pieces, a move that keeps center occupied must win immediately.
-- If that move does not win, reject it.
-- If the move vacates center, allow it normally.
-
-7) Keep winner behavior stable
-- If winner exists, ignore all additional clicks.
-- This prevents extra moves after game end.
-
-8) Keep UI compatible with tests
-- Left `.square` class on all tile buttons.
-- Kept board as 3 rows of 3 buttons.
-- Added selected-piece style class only for visual clarity.
-
-9) Manual verification in browser
-- Ran `./helper dev`.
+- Destination must be adjacent (up/down/left/right/diagonal)
+- Non-adjacent or occupied destination is invalid
+- For invalid second clicks, clear selection so move resets to start state
+6) Implemented center square rule
+- If current player has center square and has 3 pieces, a move that keeps center occupied must win immediately
+- If that move does not win, reject it
+- If the move vacates center, allow it normally
+7) Keeping winner behavior stable
+- If winner exists, ignore all additional clicks
+- This prevents extra moves after game end
+8) Keeping UI compatible with tests
+- Left .square class on all tile buttons
+- Kept board as 3 rows of 3 buttons
+- Added selected-piece style class only for visual clarity
+9) Manual game test
+- Ran ./helper dev
 - Tested these paths:
   - place first 3 pieces each
   - attempt illegal non-adjacent move (rejected)
@@ -50,17 +40,14 @@ Goal for this phase: modify the tic-tac-toe app into chorus lapilli and keep it 
   - center-rule blocked move (rejected)
   - center vacating move (accepted)
   - win game then click more squares (no changes)
-
-10) Update tests for reproducibility
-- Added extra tests in `test_chorus_lapilli.py`:
+10) Updated tests to check code/gameplay
+- Added extra tests in test_chorus_lapilli.py:
   - alternating turns
   - cannot place on occupied square
   - no moves after winner
   - fourth move adjacency requirement
   - center rule enforcement
+11) Final check s
+- Ran npm run build to make sure app compiles
+- Ran ./helper zip to ensure submission files are present and produce assign.zip
 
-11) Final check / packaging
-- Ran `npm run build` to make sure app compiles.
-- Ran `./helper zip` to ensure submission files are present and produce `assign.zip`.
-
-This is the complete reproducible sequence I used to build chorus lapilli from the tic-tac-toe baseline.
