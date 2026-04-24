@@ -1,15 +1,51 @@
-Opened the starter app and confirmed it was still the Hello World bootstrap card.
-Deleted that UI and started from the React tutorial style with `Square`, `Board`, and `Game`-style state in one file.
-Set up a 9-element array for board state and a boolean for whose turn is next.
-Wired each square button so a click sends the index back to the main click handler.
-Added guard checks so clicking a filled square does nothing (this fixed an early bug where moves could overwrite).
-Implemented `calculateWinner` using all 8 winning line combinations.
-Added status text logic: either "Next player: X/O" or "Winner: X/O".
-Ran `./helper dev`, opened localhost in browser, and manually played several games:
-- row win
-- column win
-- diagonal win
-- clicking already-filled spots
-Confirmed turns alternate correctly and board state resets on page refresh.
-Kept CSS classes from the starter (`square`, `board-row`, `status`) so layout stayed consistent.
-Did a final pass through `App.jsx` to make sure there was no leftover starter code.
+Goal for this phase: replace starter content with a basic playable tic-tac-toe app in `src/App.jsx`.
+
+1) Environment / run step
+- From project root, ran `./helper dev`.
+- Opened the local URL (usually `http://localhost:5173`) to see live updates while editing.
+
+2) Replace starter UI
+- Opened `src/App.jsx`.
+- Removed the Hello World / bootstrap card starter component.
+- Added a `Square` component that renders one button with class `square`.
+- Added a `Board` component that renders 9 squares in a 3x3 layout using `board-row`.
+
+3) Add core game state
+- In `App`, created `squares` state as `Array(9).fill(null)` to store board values.
+- Added `xIsNext` boolean state to track turn order.
+- Confirmed initial state is empty board and X turn.
+
+4) Add click behavior for placement
+- Implemented square click handler with index input.
+- Added guard: if a square is already filled, ignore click.
+- Otherwise write current symbol (`X` or `O`) into clicked square.
+- After valid move, toggle `xIsNext`.
+
+5) Add winner logic
+- Added `calculateWinner(squares)` helper.
+- Checked all 8 win lines:
+  - 3 rows
+  - 3 columns
+  - 2 diagonals
+- If three matching non-null symbols found, return winner symbol.
+
+6) Add status text
+- If winner exists, show `Winner: X` or `Winner: O`.
+- Otherwise show `Next player: X` or `Next player: O`.
+- Displayed status above the board.
+
+7) Manual validation pass
+- Played a full game for each win pattern:
+  - horizontal
+  - vertical
+  - diagonal
+- Verified clicking occupied square does nothing.
+- Verified turn alternates correctly after each valid click.
+- Verified winner state appears correctly when line is completed.
+
+8) Final cleanup for this stage
+- Kept class names compatible with assignment test selectors (`square`).
+- Re-read file from top to bottom to make sure no leftover starter code remained.
+- Saved this as baseline tic-tac-toe before chorus lapilli rule changes.
+
+This is the complete reproducible sequence I used to build the tic-tac-toe version from the starter.
